@@ -1,5 +1,6 @@
 import React from 'react'
 import {axiosWithAuth} from '../utils/axiosWithAuth'
+import {AddFriends} from './AddFriends'
 
 class Friends extends React.Component {
  state = {
@@ -12,34 +13,21 @@ class Friends extends React.Component {
      axiosWithAuth()
      .get('/friends')
      .then((res) => {
+         console.log(res.data)
         this.setState({
         friends: res.data
         })
-         .catch(err => {
-             console.log(err)
-         })
      })
- }
-
- formatData = () => {
-     const formattedData = []
-     this.state.friends.forEach((name, age, email) => {
-         formattedData.push({
-             name: name.name,
-             age: age.age,
-             email: email.email
-         })
-     })
-     return formattedData
+     .catch((err) => {
+        console.log(err)
+    })
  }
  render(){
-
-    const friends = this.formatData()
     return(
         <div>
         <h1>Friends</h1>
         <div>
-            {friends.map((friend)=>(
+            {this.state.friends.map((friend)=>(
                 <div>
                 <p>{friend.name}</p>
                 <p>{friend.age}</p>
@@ -47,6 +35,8 @@ class Friends extends React.Component {
                 </div>
             ))}
         </div>
+
+        <AddFriends state = {this.state.friends}/>
         </div>
 
     )
